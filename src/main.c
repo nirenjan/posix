@@ -14,6 +14,8 @@ struct command_map {
 const struct command_map map[] = {
     { "basename",   posix_basename  },
     { "cat",        posix_cat       },
+    { "false",      posix_false     },
+    { "true",       posix_true      },
     { NULL,         NULL            }
 };
 
