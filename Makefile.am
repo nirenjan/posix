@@ -4,9 +4,9 @@ bin_PROGRAMS = posixy
 
 # Source files for posixy
 posixy_SOURCES =    src/main.c \
-                    src/handlers/posix_cat.c \
-                    src/handlers/posix_basename.c \
-                    src/handlers/posix_true_false.c
+                    src/handlers/cat.c \
+                    src/handlers/basename.c \
+                    src/handlers/true_false.c
 
 
 posixy_CFLAGS = -I$(top_srcdir)/src -g
