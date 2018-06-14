@@ -1,23 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "handlers.h"
+#include <errno.h>
+#include <dlfcn.h>
 
 typedef int (*handler_function)(int, char**);
-
-struct command_map {
-    char *command;
-    handler_function handler;
-};
-
-const struct command_map map[] = {
-    { "basename",   posix_basename  },
-    { "cat",        posix_cat       },
-    { "false",      posix_false     },
-    { "true",       posix_true      },
-    { NULL,         NULL            }
-};
 
 /*
  * Main function which dispatches the execution to different handlers
@@ -25,10 +12,12 @@ const struct command_map map[] = {
  */
 int main(int argc, char **argv)
 {
-    const struct command_map *map_entry;
+    void *command_interp;
     int retval = 0;
-    int command_found = 0;
     char *command;
+    char command_func[64];
+    handler_function handler;
+
 
     /* Get the basename of the command */
     command = strrchr(argv[0], '/');
@@ -39,17 +28,24 @@ int main(int argc, char **argv)
         command++;
     }
 
-    for (map_entry = &map[0]; map_entry->command; map_entry++) {
-        if (strcmp(map_entry->command, command) == 0) {
-            retval = (*(map_entry->handler))(argc, argv);
-            command_found = 1;
-            break;
-        }
+    /* Load the current executable to lookup the symbol */
+    command_interp = dlopen(NULL, RTLD_NOW);
+    if (command_interp == NULL) {
+        fprintf(stderr, "Unable to load interpreter: %s\n", strerror(errno));
+        return 1;
     }
 
-    if (!command_found) {
+    /* Generate the function name for the executable */
+    snprintf(command_func, sizeof(command_func), "posix_%s", command);
+
+    /* Lookup the function */
+    handler = dlsym(command_interp, command_func);
+
+    if (!handler) {
         fprintf(stderr, "Unrecognized command %s\n", command);
         retval = 1;
+    } else {
+        retval = (*handler)(argc, argv);
     }
 
     return retval;

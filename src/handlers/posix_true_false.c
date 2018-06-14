@@ -4,8 +4,6 @@
  **********************************************************************
  */
 
-#include "handlers.h"
-
 int posix_true(int argc, char **argv)
 {
     return 0;

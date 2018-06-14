@@ -112,8 +112,6 @@ CONSEQUENCES OF ERRORS
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "handlers.h"
-
 #define PROGRAM     "cat"
 
 /*
