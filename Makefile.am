@@ -6,6 +6,7 @@ bin_PROGRAMS = posixy
 posixy_SOURCES =    src/main.c \
                     src/handlers/cat.c \
                     src/handlers/basename.c \
+                    src/handlers/tee.c \
                     src/handlers/true_false.c
 
 
