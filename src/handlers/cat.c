@@ -202,25 +202,23 @@ int posix_cat(int argc, char **argv)
         }
     }
 
+    buffer_size = sysconf(_SC_PAGE_SIZE);
+    buffer_page = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
+                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    if (buffer_page == MAP_FAILED) {
+        fprintf(stderr, "%s: %s\n", PROGRAM, strerror(errno));
+
+        /* mmap failed, but try to malloc instead */
+        buffer_page = malloc(buffer_size);
+        if (buffer_page == NULL) {
+            fprintf(stderr, "%s: %s\n", PROGRAM, strerror(errno));
+            exit(EXIT_FAILURE);
+        }
+        call_free = 1;
+    }
+
     if (unbuffered) {
         setbuf(stdout, NULL);
-        buffer_page = &buffer;
-        buffer_size = 1;
-    } else {
-        buffer_size = sysconf(_SC_PAGE_SIZE);
-        buffer_page = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
-                           MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-        if (buffer_page == MAP_FAILED) {
-            fprintf(stderr, "%s: %s\n", PROGRAM, strerror(errno));
-            
-            /* mmap failed, but try to malloc instead */
-            buffer_page = malloc(buffer_size);
-            if (buffer_page == NULL) {
-                fprintf(stderr, "%s: %s\n", PROGRAM, strerror(errno));
-                exit(EXIT_FAILURE);
-            }
-            call_free = 1;
-        }
     }
 
     if ((argc - optind) == 0) {
