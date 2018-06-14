@@ -166,7 +166,7 @@ static int cat_file(char *filename)
             break;
         }
 
-        bytes_written = write(STDOUT_FILENO, buffer_page, buffer_size);
+        bytes_written = write(STDOUT_FILENO, buffer_page, bytes_read);
         if (bytes_written == -1) {
             fprintf(stderr, "%s: stdout: %s\n", PROGRAM, strerror(errno));
             retval = 1;
