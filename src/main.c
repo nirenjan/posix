@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     char *command;
     char command_func[64];
     handler_function handler;
-
+    int offset = 0;
 
     /* Get the basename of the command */
     command = strrchr(argv[0], '/');
@@ -26,6 +26,12 @@ int main(int argc, char **argv)
     } else {
         /* Skip over the / */
         command++;
+    }
+
+    /* If the command matches PROGNAME, then use argv[1] instead */
+    if (strcmp(command, PROGNAME) == 0) {
+        command = argv[1];
+        offset = 1;
     }
 
     /* Load the current executable to lookup the symbol */
@@ -45,7 +51,7 @@ int main(int argc, char **argv)
         fprintf(stderr, "Unrecognized command %s\n", command);
         retval = 1;
     } else {
-        retval = (*handler)(argc, argv);
+        retval = (*handler)(argc - offset, argv + offset);
     }
 
     return retval;

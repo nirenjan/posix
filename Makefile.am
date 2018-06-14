@@ -9,7 +9,7 @@ posixy_SOURCES =    src/main.c \
                     src/handlers/true_false.c
 
 
-posixy_CFLAGS = -I$(top_srcdir)/src -g
+posixy_CFLAGS = -I$(top_srcdir)/src -g -Wl,--export-dynamic '-DPROGNAME="posixy"'
 posixy_LDADD = -ldl
 
 # Extra files that need to be in the distribution
