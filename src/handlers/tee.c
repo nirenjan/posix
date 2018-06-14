@@ -186,7 +186,7 @@ int posix_tee(int argc, char **argv)
         }
 
         /* Open files for writing */
-        for (int i = 0; i < tee_files; i++) {
+        for (i = 0; i < tee_files; i++) {
             file = argv[optind + i];
             fds[i] = open(file, O_CREAT | O_WRONLY | open_flags,
                           S_IRWXU | S_IRWXG | S_IRWXO);
