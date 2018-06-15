@@ -5,6 +5,8 @@ AC_PROG_CC
 #AM_PROG_AR
 #LT_INIT
 
+AM_CONDITIONAL([LINUX], [test "`uname -s`" = Linux])
+
 AC_CONFIG_FILES([
     Makefile
 ])
