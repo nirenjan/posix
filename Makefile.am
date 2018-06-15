@@ -7,8 +7,9 @@ HANDLERS = \
 		src/handlers/basename.c \
 		src/handlers/cat.c \
 		src/handlers/dirname.c \
+		src/handlers/false.c \
 		src/handlers/tee.c \
-		src/handlers/true_false.c
+		src/handlers/true.c
 
 posixy_SOURCES =    src/main.c $(HANDLERS)
 
