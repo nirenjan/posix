@@ -22,7 +22,7 @@ endif
 posixy_LDADD = -ldl
 
 # Extra files that need to be in the distribution
-EXTRA_DIST = README.md LICENSE
+EXTRA_DIST = README.md LICENSE install-links
 
 # Install rule for creating symbolic links
 install-exec-local:
