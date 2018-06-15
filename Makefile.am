@@ -3,12 +3,14 @@ ACLOCAL_AMFLAGS = -I m4
 bin_PROGRAMS = posixy
 
 # Source files for posixy
-posixy_SOURCES =    src/main.c \
-                    src/handlers/basename.c \
-                    src/handlers/cat.c \
-                    src/handlers/dirname.c \
-                    src/handlers/tee.c \
-                    src/handlers/true_false.c
+HANDLERS = \
+		src/handlers/basename.c \
+		src/handlers/cat.c \
+		src/handlers/dirname.c \
+		src/handlers/tee.c \
+		src/handlers/true_false.c
+
+posixy_SOURCES =    src/main.c $(HANDLERS)
 
 
 posixy_CFLAGS = -I$(top_srcdir)/src -g '-DPROGNAME="posixy"'
@@ -20,3 +22,11 @@ posixy_LDADD = -ldl
 
 # Extra files that need to be in the distribution
 EXTRA_DIST = README.md LICENSE
+
+# Install rule for creating symbolic links
+install-exec-local:
+	$(MKDIR_P)	$(DESTDIR)${bindir}
+	$(top_srcdir)/install-links install "$(LN_S)" $(DESTDIR)${bindir} $(HANDLERS)
+
+uninstall-hook:
+	$(top_srcdir)/install-links uninstall $(DESTDIR)${bindir} $(HANDLERS)

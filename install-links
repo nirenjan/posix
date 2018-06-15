@@ -1,0 +1,33 @@
+#!/bin/sh
+# Script to install and uninstall symbolic links
+# Usage: install-links {install|uninstall} [link-cmd] target-dir [handlers...]
+
+set -eu
+
+case "$1" in
+    install)
+        CMD="$2"
+        shift 2
+        ;;
+
+    uninstall)
+        CMD="rm -rf"
+        shift 1
+        ;;
+
+    *)
+        echo "FATAL: Invalid action $1" >&2
+        exit 1
+        ;;
+esac
+
+TARGETDIR="$1"
+shift
+
+while [ $# -gt 0 ]
+do
+    FILE=$(basename $1 .c)    
+    eval $CMD posixy $TARGETDIR/$FILE
+
+    shift
+done
