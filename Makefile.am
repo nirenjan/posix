@@ -4,8 +4,9 @@ bin_PROGRAMS = posixy
 
 # Source files for posixy
 posixy_SOURCES =    src/main.c \
-                    src/handlers/cat.c \
                     src/handlers/basename.c \
+                    src/handlers/cat.c \
+                    src/handlers/dirname.c \
                     src/handlers/tee.c \
                     src/handlers/true_false.c
 
