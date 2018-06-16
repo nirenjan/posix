@@ -8,6 +8,7 @@ HANDLERS = \
 		src/handlers/cat.c \
 		src/handlers/dirname.c \
 		src/handlers/false.c \
+		src/handlers/sleep.c \
 		src/handlers/tee.c \
 		src/handlers/true.c
 
